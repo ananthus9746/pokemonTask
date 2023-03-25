@@ -1,0 +1,14 @@
+.Home_Wrapper{
+    background-color: rgb(37, 223, 252);
+    min-height: 100vh;
+}
+.Card_container{
+    margin: auto;
+    padding: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+}

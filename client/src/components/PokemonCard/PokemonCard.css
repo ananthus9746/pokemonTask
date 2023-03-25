@@ -1,0 +1,25 @@
+.PokemonCard_wraaper {
+    min-height: 420px;
+    width: 270px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.PokemonCard_wraaper img {
+    width: 100%;
+}
+.card_txts_container{
+    margin-top: 10px;
+    
+}
+.card_name{
+    font-weight: bolder;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+.card_skills{
+    font-weight: bolder;
+    font-size: .9rem;
+    margin-bottom: 5px;
+}
