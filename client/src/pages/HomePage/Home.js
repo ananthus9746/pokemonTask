@@ -20,7 +20,7 @@ function Home() {
   }, []);
 
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:5000/pokemon?page=${page}&limit=${limit}`);
+    const response = await axios.get(`http://localhost:5000/api/pokemon?page=${page}&limit=${limit}`);
     console.log("response..",response)
     setData(prevData => [...prevData, ...response.data.getedPartners]);
     setPage(page + 1);

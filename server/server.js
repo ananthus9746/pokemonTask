@@ -30,7 +30,7 @@ app.use(express.static("files"));
 
 
 //Routes
-app.use('/',userRouter)
+app.use('/api',userRouter)
 
 
 
