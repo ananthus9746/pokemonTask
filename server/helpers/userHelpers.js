@@ -29,12 +29,7 @@ const getPokemonrHelper = async (startIndex,endIndex,limit) => {
     console.log("getPokemonrHelper ",startIndex,endIndex,limit)
     try {
         return new Promise(async (resolve, reject) => {
-
-            
-          
             // const data = await Data.find().skip(startIndex).limit(limit).exec();
-          
-
             await Pokemons.find({})
             .skip(startIndex).
             limit(limit)

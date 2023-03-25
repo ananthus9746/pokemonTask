@@ -59,7 +59,7 @@ const users = [
     {
       id: 2,
       name: "Bob",
-      email: "sandeep@gmail",
+      email: "sandeep@gmail.com",
       password: "$2a$12$4vG.HCyIZAfzvRpCTliZ9OeVWFsUWiC3IP6xpw/4z4rrrzLvhyQHq", // hashed password for "1234"
     },
   ];
@@ -117,7 +117,7 @@ const addPokemon = async (req, res) => {
 
     try {
         addPokemonrHelper(req.body,image).then((updatedProject) => {
-            console.log("add patner hrlp response", updatedProject)
+            console.log("response", updatedProject)
             res.status(200).json({ updatedProject })
         }).catch((err) => {
             // res.status(500).json({ mess: "server err...", err });
@@ -137,7 +137,7 @@ const getPokemon = async (req, res) => {
 
     try {
         getPokemonrHelper(startIndex,endIndex,limit).then((getedPartners) => {
-            res.status(200).json({ message: " getedPartners..", getedPartners })
+            res.status(200).json({ message: " getPokemonr..", getedPartners })
         })
 
     } catch (err) {
