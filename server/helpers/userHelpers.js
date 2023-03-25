@@ -1,4 +1,4 @@
-const Pokemons = require('../models/pokemons')
+const pokemon = require('../models/pokemons')
 
 const addPokemonrHelper = async (data, image) => {
 
@@ -25,15 +25,18 @@ const addPokemonrHelper = async (data, image) => {
 
 }
 
-const getPokemonrHelper = async (startIndex,endIndex,limit) => {
-    console.log("getPokemonrHelper ",startIndex,endIndex,limit)
+const getPokemonrHelper = async ( page, limit) => {
+    console.log("getPokemonrHelper  page, limit ", page, limit)
+    
+
+    const startIndex = (page || 1 - 1) * limit || 10;
+    const endIndex = page || 1 * limit || 10;
+
     try {
         return new Promise(async (resolve, reject) => {
             // const data = await Data.find().skip(startIndex).limit(limit).exec();
-            await Pokemons.find({})
-            .skip(startIndex).
-            limit(limit)
-            .then((Pokemons) => {
+            await pokemon.find({})
+            .skip(startIndex).limit(limit).then((Pokemons) => {
                 console.log("getedPartners..", Pokemons)
                 resolve(Pokemons)
             })

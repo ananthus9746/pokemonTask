@@ -1,8 +1,10 @@
 const { addPokemonrHelper, getPokemonrHelper } = require("../helpers/userHelpers")
-const user=require('../models/user')
+const user = require('../models/user')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+
+const pokemon = require('../models/pokemons')
 
 
 
@@ -16,7 +18,7 @@ const UaserSignUp = async (req, res) => {
     //     let newUserName = username.toLowerCase()
 
 
-    
+
 
     //     const user_email = await user.findOne({ email })
     //     if (user_email) return res.json({ msg: 'This email is already is already exists' })
@@ -51,26 +53,26 @@ const UaserSignUp = async (req, res) => {
 
 const users = [
     {
-      id: 1,
-      name: "Alice",
-      email: "ananthu@gmail.com",
-      password: "$2a$12$kPE5ZH/goycj675RkZrxEuabtKIN5RBKZc//vnjQmavqJm29qDhme", // hashed password for "123"
+        id: 1,
+        name: "Alice",
+        email: "ananthu@gmail.com",
+        password: "$2a$12$kPE5ZH/goycj675RkZrxEuabtKIN5RBKZc//vnjQmavqJm29qDhme", // hashed password for "123"
     },
     {
-      id: 2,
-      name: "Bob",
-      email: "sandeep@gmail.com",
-      password: "$2a$12$4vG.HCyIZAfzvRpCTliZ9OeVWFsUWiC3IP6xpw/4z4rrrzLvhyQHq", // hashed password for "1234"
+        id: 2,
+        name: "Bob",
+        email: "sandeep@gmail.com",
+        password: "$2a$12$4vG.HCyIZAfzvRpCTliZ9OeVWFsUWiC3IP6xpw/4z4rrrzLvhyQHq", // hashed password for "1234"
     },
-  ];
+];
 
-  //{ email: 'sandeep@gmail', password: '1234' }
-  //{ email: 'sandeep@gmail', Password: '1234' }
+//{ email: 'sandeep@gmail', password: '1234' }
+//{ email: 'sandeep@gmail', Password: '1234' }
 
 const UserLogin = async (req, res) => {
     console.log("login credentials...", req.body)
 
-   
+
     const { email, password } = req.body;
 
     console.log(" email, password", email, password)
@@ -78,34 +80,34 @@ const UserLogin = async (req, res) => {
     // Find user by email
     const user = users.find((u) => u.email === email);
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Invalid email or password" });
     }
-  
+
     // Check password
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Invalid email or password" });
     }
-  
+
     // Create JWT token
     const token = jwt.sign({ userId: user.id }, process.env.JWT_USER_SECRET_KEY, {
-      expiresIn: "1h",
+        expiresIn: "1h",
     });
-  
+
     // Set JWT token as HTTP-only cookie
     res.cookie("access_token", token, {
-      httpOnly: true,
-      maxAge: 3600000, // 1 hour
+        httpOnly: true,
+        maxAge: 3600000, // 1 hour
     });
-  
-    console.log("res.cookie..",token)
+
+    console.log("res.cookie..", token)
 
     console.log("login successful")
     // res.json({ message: "Login successful" });
 
-     res.status(200).json({  message: "Login successful"  })
+    res.status(200).json({ message: "Login successful" })
 
-    
+
 }
 
 
@@ -116,7 +118,7 @@ const addPokemon = async (req, res) => {
 
 
     try {
-        addPokemonrHelper(req.body,image).then((updatedProject) => {
+        addPokemonrHelper(req.body, image).then((updatedProject) => {
             console.log("response", updatedProject)
             res.status(200).json({ updatedProject })
         }).catch((err) => {
@@ -130,22 +132,58 @@ const addPokemon = async (req, res) => {
 
 const getPokemon = async (req, res) => {
 
-    const { page, limit } = req.query;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    console.log("get crtl Pokemons..",page,limit)
+
+
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    console.log("get crtl pokemon..", page, limit, offset)
 
     try {
-        getPokemonrHelper(startIndex,endIndex,limit).then((getedPartners) => {
-            res.status(200).json({ message: " getPokemonr..", getedPartners })
-        })
+        const count = await pokemon.countDocuments();
 
-    } catch (err) {
-        console.log("err", err)
+        const getedPartners = await pokemon.find({}).skip(offset).limit(limit);
+        // res.send(data);
+        console.log("getedPartners..", getedPartners)
+        console.log(count)
+        let counted = Math.ceil(count / limit)
+        res.status(200).json({ message: " getPokemonr..", getedPartners, totalPages: counted })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
     }
 
 }
 
 
-module.exports = { UaserSignUp, UserLogin, addPokemon, getPokemon }
+
+const getPokemonTwo = async (req, res) => {
+    const skip = parseInt(req.query.skip);
+    const limit = parseInt(req.query.limit);
+
+    // Retrieve the data from the database based on the skip and limit values
+    // await pokemon.find({}).skip(skip).limit(limit).(err, data) => {
+    //   if (err) {
+    //     console.error(err);
+    //     res.status(500).send('Error retrieving data from database');
+    //   } else {
+
+    //     console.log("getPokemonTwo..",data)
+    //     res.status(200).json({ message: " getPokemonTwo..", data})
+
+    //   }
+    // }
+
+    const data = await pokemon.find({}).skip(skip).limit(limit);
+
+    console.log("getPokemonTwo..", data)
+    res.status(200).json({ message: " getPokemonTwo..", data })
+
+
+};
+
+module.exports = { UaserSignUp, UserLogin, addPokemon, getPokemon, getPokemonTwo }
 

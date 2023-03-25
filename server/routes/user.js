@@ -2,7 +2,7 @@ const express = require('express')
 const multer = require("multer");
 const router = express.Router()
 
-const {UaserSignUp,UserLogin,addPokemon,getPokemon} =require('../controller/userController')
+const {UaserSignUp,UserLogin,addPokemon,getPokemon,getPokemonTwo} =require('../controller/userController')
 const {verifyUser}=require('../AuthenticationMiddleWear/UserAuth')
 
 var storage = multer.diskStorage({
@@ -21,6 +21,9 @@ const upload = multer({ storage });
  router.post('/pokemon',upload.single("image"),addPokemon)
 
  router.get('/pokemon',getPokemon)
+
+ router.get('/pokemonTwo',getPokemonTwo )
+
 
 
 
