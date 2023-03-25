@@ -1,5 +1,4 @@
 import React,{useEffect,useState,useRef} from "react";
-import { getPokemon } from "../../APIs/Api";
 import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import "./Home.css";
 import axios from 'axios'
@@ -44,6 +43,7 @@ function Home() {
       rootMargin: '0px',
       threshold: 1.0
     };
+    
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && page < totalPages && !loading) {
         setPage(prevPage => prevPage + 1);
@@ -67,12 +67,9 @@ function Home() {
       <div className="Card_container">
         {records.map((obj)=>
         <PokemonCard  obj={obj}/>
-        )}
-      
+        )} 
       </div>
-
       <div ref={loaderRef}>{loading && 'Loading...'}</div>
-
     </div>
   );
 }
