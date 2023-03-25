@@ -10,7 +10,7 @@ const PokemonsSchema=new mongoose.Schema({
     abilities:[{
         type:String
     }],
-    Image:{
+    image:{
         type:String
     },
 },{timestamps:true }

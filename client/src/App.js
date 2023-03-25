@@ -1,13 +1,20 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, } from "react-router-dom";
 import Home from './pages/HomePage/Home';
+import Login from './pages/LoginPage/Login';
+import UserAuth from './ProtectiveRoutes/UserAuth';
+
 
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />}/>
+      <Route path="/login" element={<Login />} />
+        <Route path="/" element={<UserAuth />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        
       </Routes>
 
     </>

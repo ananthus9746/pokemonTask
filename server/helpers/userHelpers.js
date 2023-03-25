@@ -1,21 +1,22 @@
 const Pokemons = require('../models/pokemons')
 
-const addPokemonrHelper = async (PartnerName, partnerImage) => {
+const addPokemonrHelper = async (data, image) => {
 
     try {
         return new Promise(async (resolve, reject) => {
-            console.log(" addPokemonrHelper promis ...", )
-            // console.log("partnerImage promise", partnerImage)
+            console.log(" addPokemonrHelper promis ...",data,data )
 
-            // const partner = new Partner({
-            //     PartnerName: PartnerName,
-            //     PartnerImage: partnerImage,
-            // })
+            const pokemons = new Pokemons({
+                name:data.name,
+                attack:data.attack,
+                abilities:data.abilities,
+                image
+            })
 
-            // await partner.save().then((partner) => {
-            //     console.log("saved partner..", partner)
-            //     resolve({ partner: "partner added sucessfully.." })
-            // })
+            await pokemons.save().then((pokemons) => {
+                console.log("saved pokemons..", pokemons)
+                resolve({ pokemon: "pokemons added sucessfully.." })
+            })
         })
     }
     catch (err) {
@@ -24,15 +25,23 @@ const addPokemonrHelper = async (PartnerName, partnerImage) => {
 
 }
 
-const getPokemonrHelper = async () => {
-    console.log("getPokemonrHelper ")
+const getPokemonrHelper = async (startIndex,endIndex,limit) => {
+    console.log("getPokemonrHelper ",startIndex,endIndex,limit)
     try {
         return new Promise(async (resolve, reject) => {
 
-            // await Partner.find({}).then((getedPartners) => {
-            //     console.log("getedPartners..", getedPartners)
-            //     resolve(getedPartners)
-            // })
+            
+          
+            // const data = await Data.find().skip(startIndex).limit(limit).exec();
+          
+
+            await Pokemons.find({})
+            .skip(startIndex).
+            limit(limit)
+            .then((Pokemons) => {
+                console.log("getedPartners..", Pokemons)
+                resolve(Pokemons)
+            })
         })
     }
     catch (err) {

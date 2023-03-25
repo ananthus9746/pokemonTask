@@ -4,28 +4,33 @@ const bcrypt = require('bcrypt')
 const verifyUser =(req,res,next)=>{
     console.log("enterd user headers..", req.headers)
 
-    console.log("enterd user verify..", req.headers.accesstoken)
-    const token = req.headers.accesstoken;
-    try{
-        if(!token){
-            res.status(403).json("verifivation failed")
-        }
-        else{
-            jwt.verify(token,process.env.JWT_USER_SECRET_KEY,(err,user)=>{
-                if(err){
-                    console.log("verify err verifivation failed time out.",err)
-                    res.status(403).json("verifivation failed time out")
+      // Get token from cookie
+  const token = req.cookies.access_token;
 
-                }else{
-                    console.log("user",user)
-                    next()
-                }
-            })
-        }
-    }
-    catch(err){
-        console.log(err)
-   }
+
+
+  console.log("token..",token)
+
+
+
+  // Check if token exists
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token,process.env.JWT_USER_SECRET_KEY);
+
+    // Set user ID in request object
+    req.userId = decoded.userId;
+
+    next();
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+
 }
 
 
