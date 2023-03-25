@@ -15,9 +15,9 @@ users credential:
     "password:1234
 
 
-LOGIN:  http://localhost:5000/login
-POST:   http://localhost:5000/pokemon
-GET:    http://localhost:5000/pokemon
+LOGIN:  http://localhost:5000/api/login
+POST:   http://localhost:5000/api/pokemon
+GET:    http://localhost:5000/api/pokemon?page=${page}&limit=${limit}
 
 client PORT //3000
 server PORT //5000
