@@ -132,9 +132,6 @@ const addPokemon = async (req, res) => {
 
 const getPokemon = async (req, res) => {
 
-
-
-
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
@@ -160,30 +157,7 @@ const getPokemon = async (req, res) => {
 
 
 
-const getPokemonTwo = async (req, res) => {
-    const skip = parseInt(req.query.skip);
-    const limit = parseInt(req.query.limit);
-
-    // Retrieve the data from the database based on the skip and limit values
-    // await pokemon.find({}).skip(skip).limit(limit).(err, data) => {
-    //   if (err) {
-    //     console.error(err);
-    //     res.status(500).send('Error retrieving data from database');
-    //   } else {
-
-    //     console.log("getPokemonTwo..",data)
-    //     res.status(200).json({ message: " getPokemonTwo..", data})
-
-    //   }
-    // }
-
-    const data = await pokemon.find({}).skip(skip).limit(limit);
-
-    console.log("getPokemonTwo..", data)
-    res.status(200).json({ message: " getPokemonTwo..", data })
 
 
-};
-
-module.exports = { UaserSignUp, UserLogin, addPokemon, getPokemon, getPokemonTwo }
+module.exports = { UaserSignUp, UserLogin, addPokemon, getPokemon, }
 

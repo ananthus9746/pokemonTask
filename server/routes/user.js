@@ -22,7 +22,6 @@ const upload = multer({ storage });
 
  router.get('/pokemon',getPokemon)
 
- router.get('/pokemonTwo',getPokemonTwo )
 
 
 

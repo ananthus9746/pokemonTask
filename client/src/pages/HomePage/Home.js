@@ -1,12 +1,10 @@
 import React,{useEffect,useState,useRef} from "react";
+import { getPokemon } from "../../APIs/Api";
 import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import "./Home.css";
 import axios from 'axios'
 
-//   const response = await axios.get(`http://localhost:5000/api/pokemon?page=${page}&limit=10`);
-// var response = await fetch(`http://localhost:5000/api/pokemon?page=${page}&limit=5`);
-//response.data.getedPartners
-//`http://localhost:5000/api/pokemon?page=${page}&limit=5
+
 
 function Home() {
 
@@ -43,6 +41,8 @@ function Home() {
       rootMargin: '0px',
       threshold: 1.0
     };
+
+    console.log("scoll..")
     
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && page < totalPages && !loading) {
@@ -67,9 +67,12 @@ function Home() {
       <div className="Card_container">
         {records.map((obj)=>
         <PokemonCard  obj={obj}/>
-        )} 
+        )}
+      
       </div>
+
       <div ref={loaderRef}>{loading && 'Loading...'}</div>
+
     </div>
   );
 }

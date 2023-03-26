@@ -6,7 +6,7 @@ const addPokemonrHelper = async (data, image) => {
         return new Promise(async (resolve, reject) => {
             console.log(" addPokemonrHelper promis ...",data,data )
 
-            const pokemons = new Pokemons({
+            var pokemons = new pokemon({
                 name:data.name,
                 attack:data.attack,
                 abilities:data.abilities,
