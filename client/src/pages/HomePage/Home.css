@@ -1,5 +1,5 @@
 .Home_Wrapper{
-    background-color: rgb(37, 223, 252);
+    background-color: rgb(13, 207, 236);
     min-height: 100vh;
 }
 .Card_container{
@@ -11,4 +11,11 @@
     align-items: center;
     justify-content: center;
     max-width: 1200px;
+}
+.loading{
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    text-align: center;
+    padding-bottom: 30px;
+    
 }
