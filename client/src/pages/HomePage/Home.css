@@ -1,6 +1,6 @@
 .Home_Wrapper{
     background-color: rgb(37, 223, 252);
-    /* min-height: 100vh; */
+    min-height: 100vh;
 }
 .Card_container{
     margin: auto;

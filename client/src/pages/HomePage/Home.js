@@ -23,13 +23,30 @@ function Home() {
     const fetchRecords = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${offset}&limit=5`);
+        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${offset}&limit=3`);
         // const { data, totalPages } = response.data;
         console.log("response.data..",response.data)
         var data=response.data.getedPartners
         var totalPages=response.data.totalPages
+
+        console.log("data..",data)
+
+        {data.length>1?
+
+          console.log("data..here..")
+          
+          :
+
+          console.log("no data..")
+          setLoading(false);
+
+        
+        }
+
+
         setRecords(prevRecords => [...prevRecords, ...data]);
-        setTotalPages(totalPages);
+        // setTotalPages(totalPages);
+
       } catch (error) {
         setError(error.message);
       } finally {
@@ -39,6 +56,7 @@ function Home() {
     fetchRecords();
   }, [offset]);
 
+ 
 
   useEffect(()=>{
     const handleScroll=(e)=>{
@@ -46,6 +64,7 @@ function Home() {
       const currentHeight=e.target.documentElement.scrollTop +window.innerHeight
       if(currentHeight+1 >= scrollHeight)
       setOffset(offset+1)
+      
     }
     window.addEventListener("scroll",handleScroll)
     return()=>window.removeEventListener("scroll",handleScroll)
