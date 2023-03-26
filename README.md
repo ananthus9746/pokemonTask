@@ -17,7 +17,7 @@ users credential:
 
 LOGIN:  http://localhost:5000/api/login
 POST:   http://localhost:5000/api/pokemon
-GET:    http://localhost:5000/api/pokemon?page=${page}&limit=${limit}
+GET:    http://localhost:5000/api/pokemon?page=${offset}&limit=${limit}
 
 client PORT //3000
 server PORT //5000
