@@ -47,7 +47,11 @@ function Home() {
         const currentHeight = e.target.documentElement.scrollTop + window.innerHeight
         if (currentHeight + 1 >= scrollHeight)
           setOffset(offset + 1)
-      }
+        }
+        //***Enable this if statement for smooth scrolling and disable top one***//
+        //if (currentHeight + 1 >= scrollHeight-1500)
+        //setOffset(offset + 1)
+        // }
       window.addEventListener("scroll", handleScroll)
       return () => window.removeEventListener("scroll", handleScroll)
     }
