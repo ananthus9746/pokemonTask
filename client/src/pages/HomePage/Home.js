@@ -15,11 +15,15 @@ function Home() {
   const [error, setError] = useState(null);
   const loaderRef = useRef(null);
 
+
+  const [data,setData]=useState([])
+  const [offset,setOffset]=useState(0)
+
   useEffect(() => {
     const fetchRecords = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${page}&limit=10`);
+        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${offset}&limit=5`);
         // const { data, totalPages } = response.data;
         console.log("response.data..",response.data)
         var data=response.data.getedPartners
@@ -33,33 +37,61 @@ function Home() {
       }
     };
     fetchRecords();
-  }, [page]);
+  }, [offset]);
 
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0
-    };
 
-    console.log("scoll..")
-    
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && page < totalPages && !loading) {
-        setPage(prevPage => prevPage + 1);
-      }
-    }, options);
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+  useEffect(()=>{
+    const handleScroll=(e)=>{
+      const scrollHeight=e.target.documentElement.scrollHeight
+      const currentHeight=e.target.documentElement.scrollTop +window.innerHeight
+      if(currentHeight+1 >= scrollHeight)
+      setOffset(offset+1)
     }
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [page, totalPages, loading]);
+    window.addEventListener("scroll",handleScroll)
+    return()=>window.removeEventListener("scroll",handleScroll)
+  },[offset])
 
-  if (error) return <div>Error: {error}</div>;
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const options = {
+  //     root: null,
+  //     rootMargin: '0px',
+  //     threshold: 1.0
+  //   };
+
+  //   console.log("scoll..")
+    
+  //   const observer = new IntersectionObserver(([entry]) => {
+  //     console.log('IntersectionObserver triggered'); 
+
+  //     if (entry.isIntersecting && page < totalPages && !loading) {
+  //       setPage(prevPage => prevPage + 1);
+  //     }
+  //   }, options);
+  //   if (loaderRef.current) {
+  //     console.log('IntersectionObserver 1')
+
+  //     observer.observe(loaderRef.current);
+
+  //   }
+  //   return () => {
+  //     if (loaderRef.current) {
+  //       console.log('IntersectionObserver 2')
+
+  //       observer.unobserve(loaderRef.current);
+  //     }
+  //   };
+  // }, [page, totalPages, loading]);
+
+  // if (error) return <div>Error: {error}</div>;
 
 
   return (
