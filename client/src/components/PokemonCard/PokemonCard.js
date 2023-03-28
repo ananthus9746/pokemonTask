@@ -1,9 +1,7 @@
 import React,{useState} from 'react'
 import './PokemonCard.css'
-import image from '../../ImagesDemo/1_hires.png'
 
 function PokemonCard(obj) {
-  // console.log("obj..",obj.obj)
   const [Attack,setAttack]=useState(obj.obj.attack)
 
   return (

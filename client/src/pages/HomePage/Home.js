@@ -5,7 +5,6 @@ import axios from "axios";
 
 function Home() {
  
-
   const [posts, setPost] = useState([]);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(6);

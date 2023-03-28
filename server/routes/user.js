@@ -23,11 +23,4 @@ const upload = multer({ storage });
 
 //router.get('/pokemon',verifyUser,getPokemon)
 
-
-
-
-
-
-
-
  module.exports = router
