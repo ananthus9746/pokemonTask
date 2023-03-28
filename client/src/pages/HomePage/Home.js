@@ -1,78 +1,61 @@
 import React, { useEffect, useState, useRef } from "react";
 import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import "./Home.css";
-import axios from 'axios'
-
-
+import axios from "axios";
 
 function Home() {
+ 
 
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const loaderRef = useRef(null);
-  const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(3)
-  const [nodData, setnoData] = useState(false)
+  const [posts, setPost] = useState([]);
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(6);
+  const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    const fetchRecords = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${offset}&limit=${limit}`);
-        // const { data, totalPages } = response.data;
-        console.log("response.data..", response.data)
-        var data = response.data.getedPartners
-
-        console.log("data..", data)
-        if (data.length < 1) {
-          setnoData(true)
-        }
-        setRecords(prevRecords => [...prevRecords, ...data]);
-        // setTotalPages(totalPages);
-
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchRecords();
-  }, [offset]);
+  }, [skip]);
 
-  useEffect(() => {
-    if (!nodData) {
-      const handleScroll = (e) => {
-        const scrollHeight = e.target.documentElement.scrollHeight
-        const currentHeight = e.target.documentElement.scrollTop + window.innerHeight
-        if (currentHeight + 1 >= scrollHeight)
-          setOffset(offset + 1)
-        }
-        //***Enable this if statement for smooth scrolling and disable top one***//
-        //if (currentHeight + 1 >= scrollHeight-1500)
-        //setOffset(offset + 1)
-        // }
-      window.addEventListener("scroll", handleScroll)
-      return () => window.removeEventListener("scroll", handleScroll)
+  const fetchRecords = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/pokemon?skip=${skip}&limit=${limit}`
+      );
+      const data = response.data.getedPartners;
+
+      if (data?.length === 0) {
+        setIsEnd(true);
+      }
+
+      setPost([...posts, ...data]);
+    } catch (error) {
+      console.log("err..", error);
     }
+  };
 
-  }, [offset])
+  const handleScroll = (e) => {
+    const { offsetHeight, scrollTop, scrollHeight } = e.target;
+    if (offsetHeight + scrollTop >= scrollHeight) {
+      setSkip(posts?.length);
+    }
+  };
 
-
+  const divStyle = {
+    overflowY: "scroll",
+    border: "1px solid gray",
+    height: "800px",
+    backgroundColor:"aqua"
+  };
 
   return (
-
-    <div className="Home_Wrapper">
-     {error?<>Erorr:{error}</>:""}
-      <div className="Card_container">
-        {records.map((obj) =>
-          <PokemonCard obj={obj} />
-        )}
-
+    <div className="home_wrapper">
+      <div style={divStyle} onScroll={handleScroll}>
+        <div className="Card_container">
+          {posts.map((obj) => (
+            <PokemonCard obj={obj} />
+          ))}
+        </div>
+        {isEnd && <h1 className="end">END REACHED</h1>}
       </div>
-      <div className="loading" ref={loaderRef}>{loading && 'Loading...'}</div>
-      {nodData?<p className="loading">Completed all datas are viewed</p>:""}
-
     </div>
   );
 }

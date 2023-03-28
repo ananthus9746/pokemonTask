@@ -13,14 +13,16 @@ var storage = multer.diskStorage({
   })
 const upload = multer({ storage });
 
-//  router.post('/signUp',UaserSignUp)
+//router.post('/signUp',UaserSignUp)
 
  router.post('/login',UserLogin)
-
 
  router.post('/pokemon',upload.single("image"),addPokemon)
 
  router.get('/pokemon',getPokemon)
+
+//router.get('/pokemon',verifyUser,getPokemon)
+
 
 
 

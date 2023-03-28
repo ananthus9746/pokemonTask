@@ -1,7 +1,11 @@
-.Home_Wrapper{
-    background-color: rgb(13, 207, 236);
-    min-height: 100vh;
+.home_wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
 }
+
 .Card_container{
     margin: auto;
     padding: 35px;
@@ -12,10 +16,8 @@
     justify-content: center;
     max-width: 1200px;
 }
-.loading{
-    color: rgb(255, 255, 255);
-    font-weight: bolder;
+.end{
+    font-size: 1rem;
+    color: gray;
     text-align: center;
-    padding-bottom: 30px;
-    
 }

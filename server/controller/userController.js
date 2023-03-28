@@ -3,11 +3,7 @@ const user = require('../models/user')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-
 const pokemon = require('../models/pokemons')
-
-
-
 
 const UaserSignUp = async (req, res) => {
     console.log("UaserSignUp credentials...", req.body)
@@ -115,8 +111,6 @@ const addPokemon = async (req, res) => {
     console.log("addPokemon ctrl ...", req.body)
     const image = req.file?.filename;
     console.log("Imge..", image);
-
-
     try {
         addPokemonrHelper(req.body, image).then((updatedProject) => {
             console.log("response", updatedProject)
@@ -132,26 +126,51 @@ const addPokemon = async (req, res) => {
 
 const getPokemon = async (req, res) => {
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 5;
+    
 
-    console.log("get crtl pokemon..", page, limit, offset)
+    console.log("skip, limit", skip, limit,)
 
     try {
         const count = await pokemon.countDocuments();
 
-        const getedPartners = await pokemon.find({}).skip(offset).limit(limit);
+        const getedPartners = await pokemon.find({}).skip(skip).limit(limit);
         // res.send(data);
         console.log("getedPartners..", getedPartners)
         console.log(count)
-        let counted = Math.ceil(count / limit)
-        res.status(200).json({ message: " getPokemonr..", getedPartners, totalPages: counted })
+        res.status(200).json({ message: " getPokemonr..", getedPartners, })
 
     } catch (error) {
         console.error(error);
         res.status(500).send('Server error');
     }
+
+
+
+
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 10;
+    // const offset = (page - 1) * limit;
+
+    // const skip = parseInt(req.query.skip) || 0;
+
+    // console.log("get crtl pokemon..", page, limit, offset)
+
+    // try {
+    //     const count = await pokemon.countDocuments();
+
+    //     const getedPartners = await pokemon.find({}).skip(offset).limit(limit);
+    //     // res.send(data);
+    //     console.log("getedPartners..", getedPartners)
+    //     console.log(count)
+    //     let counted = Math.ceil(count / limit)
+    //     res.status(200).json({ message: " getPokemonr..", getedPartners, totalPages: counted })
+
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).send('Server error');
+    // }
 
 }
 

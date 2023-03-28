@@ -1,0 +1,74 @@
+import React, { useEffect, useState, useRef } from "react";
+import PokemonCard from "../../components/PokemonCard/PokemonCard";
+import "./Home.css";
+import axios from 'axios'
+
+
+
+function Home() {
+
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const loaderRef = useRef(null);
+  
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(3);
+  const [noData, setNoData] = useState(false);
+  
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`http://localhost:5000/api/pokemon?page=${offset}&limit=${limit}`);
+        const data = response.data.getedPartners;
+        if (data.length < 1) {
+          setNoData(true);
+        }
+        setRecords(prevRecords => [...prevRecords, ...data]);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    const handleScroll = (e) => {
+      const scrollHeight = e.target.documentElement.scrollHeight;
+      const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
+      if (!noData && currentHeight + 1 >= scrollHeight) {
+        setOffset(offset + 1);
+      }
+    };
+  
+    if (offset => 0) {
+      fetchRecords();
+    }
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  
+  }, [offset, noData]);
+  
+  
+
+
+
+  return (
+
+    <div className="Home_Wrapper">
+     {error?<>Erorr:{error}</>:""}
+      <div className="Card_container">
+        {records.map((obj) =>
+          <PokemonCard obj={obj} />
+        )}
+
+      </div>
+      <div className="loading" ref={loaderRef}>{loading && 'Loading...'}</div>
+      {noData?<p className="loading">Completed all datas are viewed</p>:""}
+
+    </div>
+  );
+}
+
+export default Home;
